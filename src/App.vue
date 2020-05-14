@@ -1,32 +1,74 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+  <div>
+    <!-- <button @click="starts">Start</button> -->
+    <h1 id="qunit-header">Load admin Company Details</h1>
+    <!-- <h2 id="qunit-banner"></h2> -->
+    <!-- <div id="qunit-testrunner-toolbar"></div> -->
+    <!-- <h2 id="qunit-userAgent">ok</h2> -->
+    <ol id="qunit-tests"></ol>
+    <!-- <div id="qunit-fixture">test markup</div> -->
   </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+import QUnit from "qunit";
+
+function square(x) {
+  return x * x;
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+var j = {
+  glossary: {
+    title: "example glossary",
+    GlossDiv: {
+      title: "S",
+      GlossList: {
+        GlossEntry: {
+          ID: "SGML",
+          SortAs: "SGML",
+          GlossTerm: "Standard Generalized Markup Language",
+          Acronym: "SGML",
+          Abbrev: "ISO 8879:1986",
+          GlossDef: {
+            para:
+              "A meta-markup language, used to create markup languages such as DocBook.",
+            GlossSeeAlso: ["GML", "XML"]
+          },
+          GlossSee: "markup"
+        }
+      }
     }
   }
-}
-</style>
+};
+
+//TODO: rename of function to default name
+var fstr = `function getValue(oj) {
+  return oj.glossary.GlossDiv.GlossList.GlossEntry.GlossDef.GlossSeeAlso.length;
+}`;
+
+export default {
+  methods: {
+    starts() {
+      QUnit.start();
+    }
+  },
+  mounted() {
+    QUnit.start();
+    QUnit.module("group A");
+    QUnit.test("Test example", function(assert) {
+      assert.equal(
+        new Function("oj", "return " + fstr + "(oj)")(j),
+        "2",
+        "Glossery is done"
+      );
+    });
+    QUnit.module("group B");
+    QUnit.test("square()", function(assert) {
+      var result = square(2);
+      assert.equal(result, 7, "square(2) equals 4");
+    });
+  }
+};
+</script>
+
+<style lang="css" scoped></style>
